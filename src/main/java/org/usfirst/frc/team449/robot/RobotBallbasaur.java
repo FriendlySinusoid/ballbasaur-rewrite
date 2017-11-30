@@ -1,4 +1,226 @@
 package org.usfirst.frc.team449.robot;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.wpi.first.wpilibj.command.Command;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.usfirst.frc.team449.robot.drive.unidirectional.DriveTalonCluster;
+import org.usfirst.frc.team449.robot.jacksonWrappers.MappedDigitalInput;
+import org.usfirst.frc.team449.robot.jacksonWrappers.MappedRunnable;
+import org.usfirst.frc.team449.robot.jacksonWrappers.YamlCommand;
+import org.usfirst.frc.team449.robot.oi.OI;
+import org.usfirst.frc.team449.robot.oi.buttons.CommandButton;
+import org.usfirst.frc.team449.robot.other.Logger;
+import org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple;
+import org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * The Jackson-compatible object representing the entire robot.
+ */
 public class RobotBallbasaur {
+
+	/**
+	 * The buttons for controlling this robot.
+	 */
+	@NotNull
+	private final List<CommandButton> buttons;
+
+	/**
+	 * The OI for controlling this robot's drive.
+	 */
+	@NotNull
+	private final OI oi;
+
+	/**
+	 * The logger for recording events and telemetry data.
+	 */
+	@NotNull
+	private final Logger logger;
+
+	/**
+	 * The drive.
+	 */
+	@NotNull
+	private final DriveTalonCluster drive;
+
+	/**
+	 * The command for the drive to run during the teleoperated period.
+	 */
+	@NotNull
+	private final Command defaultDriveCommand;
+
+	/**
+	 * A runnable that updates cached variables.
+	 */
+	@NotNull
+	private final Runnable updater;
+
+
+	/**
+	 * The pneumatics on this robot. Can be null.
+	 */
+	@Nullable
+	private final Pneumatics pneumatics;
+
+	/**
+	 * The gear handler on this robot. Can be null.
+	 */
+	@Nullable
+	private final SolenoidSimple gearHandler;
+
+	/**
+	 * The I2C port of the RIOduino plugged into this robot. Can be null.
+	 */
+	@Nullable
+	private final Integer RIOduinoPort;
+
+	/**
+	 * The switch for selecting which alliance we're on. Can be null if doMP is false or testMP is true, but otherwise
+	 * must have a value.
+	 */
+	@Nullable
+	private final MappedDigitalInput locationDial;
+
+	/**
+	 * The command to be run when first enabled in teleoperated mode.
+	 */
+	@Nullable
+	private final Command teleopStartupCommand;
+
+	/**
+	 * The command to be run when first enabled.
+	 */
+	@Nullable
+	private final Command startupCommand;
+
+
+	@JsonCreator
+	public RobotBallbasaur(@Nullable List<CommandButton> buttons,
+	                       @NotNull @JsonProperty(required = true) OI oi,
+	                       @NotNull @JsonProperty(required = true) Logger logger,
+	                       @NotNull @JsonProperty(required = true) DriveTalonCluster drive,
+	                       @NotNull @JsonProperty(required = true) YamlCommand defaultDriveCommand,
+	                       @NotNull @JsonProperty(required = true) MappedRunnable updater,
+	                       @Nullable Pneumatics pneumatics,
+	                       @Nullable SolenoidSimple gearHandler,
+	                       @Nullable Integer RIOduinoPort,
+	                       @Nullable MappedDigitalInput locationDial,
+	                       @Nullable YamlCommand teleopStartupCommand,
+	                       @Nullable YamlCommand startupCommand) {
+		this.buttons = buttons != null ? buttons : new ArrayList<>();
+		this.oi = oi;
+		this.drive = drive;
+		this.pneumatics = pneumatics;
+		this.gearHandler = gearHandler;
+		this.logger = logger;
+		this.updater = updater;
+		this.RIOduinoPort = RIOduinoPort;
+		this.locationDial = locationDial;
+		this.defaultDriveCommand = defaultDriveCommand.getCommand();
+		this.teleopStartupCommand = teleopStartupCommand != null ? teleopStartupCommand.getCommand() : null;
+		this.startupCommand = startupCommand != null ? startupCommand.getCommand() : null;
+	}
+
+	/**
+	 * @return The buttons for controlling this robot.
+	 */
+	@NotNull
+	public List<CommandButton> getButtons() {
+		return buttons;
+	}
+
+	/**
+	 * @return The OI for controlling this robot's drive.
+	 */
+	@NotNull
+	public OI getOI() {
+		return oi;
+	}
+
+	/**
+	 * @return The logger for recording events and telemetry data.
+	 */
+	@NotNull
+	public Logger getLogger() {
+		return logger;
+	}
+
+	/**
+	 * @return The drive.
+	 */
+	@NotNull
+	public DriveTalonCluster getDrive() {
+		return drive;
+	}
+
+	/**
+	 * @return The command for the drive to run during the teleoperated period.
+	 */
+	@NotNull
+	public Command getDefaultDriveCommand() {
+		return defaultDriveCommand;
+	}
+
+	/**
+	 * @return The pneumatics on this robot. Can be null.
+	 */
+	@Nullable
+	public Pneumatics getPneumatics() {
+		return pneumatics;
+	}
+
+	/**
+	 * @return The gear handler on this robot. Can be null.
+	 */
+	@Nullable
+	public SolenoidSimple getGearHandler() {
+		return gearHandler;
+	}
+
+	/**
+	 * @return The I2C port of the RIOduino plugged into this robot. Can be null.
+	 */
+	@Nullable
+	public Integer getRIOduinoPort() {
+		return RIOduinoPort;
+	}
+
+
+	/**
+	 * @return The dial for selecting which side of the field the robot is on. Can be null if getDoMP returns false or
+	 * getTestMP returns true, but otherwise has a value.
+	 */
+	@Nullable
+	public MappedDigitalInput getLocationDial() {
+		return locationDial;
+	}
+
+	/**
+	 * @return The command to be run when first enabled in teleoperated mode.
+	 */
+	@Nullable
+	public Command getTeleopStartupCommand() {
+		return teleopStartupCommand;
+	}
+
+
+	/**
+	 * @return The command to be run when first enabled.
+	 */
+	@Nullable
+	public Command getStartupCommand() {
+		return startupCommand;
+	}
+
+	/**
+	 * @return A runnable that updates cached variables.
+	 */
+	@NotNull
+	public Runnable getUpdater() {
+		return updater;
+	}
 }

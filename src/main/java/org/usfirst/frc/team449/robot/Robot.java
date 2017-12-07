@@ -113,7 +113,7 @@ public class Robot extends IterativeRobot {
 		if (robotMap.getTeleopStartupCommand() != null)
 			robotMap.getTeleopStartupCommand().start();
 
-		driveSubsystem.setDefaultCommandManual(robotMap.getDefaultDriveCommand());g
+		driveSubsystem.setDefaultCommandManual(robotMap.getDefaultDriveCommand());
 	}
 
 	/**

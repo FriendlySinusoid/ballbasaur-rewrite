@@ -79,7 +79,7 @@ public class Robot extends IterativeRobot {
 			YAMLMapper mapper = new YAMLMapper();
 			//Turn the Map read by SnakeYaml into a String so Jackson can read it.
 			String fixed = mapper.writeValueAsString(normalized);
-			//Use a parameter name module so we don't have to specify name for every field.
+			//Use a parameter name module so we don't have to specify name for every field./
 			mapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
 			//Deserialize the map into an object.
 			robotMap = mapper.readValue(fixed, RobotBallbasaur.class);
@@ -91,9 +91,6 @@ public class Robot extends IterativeRobot {
 		//Set fields from the map.
 		this.loggerNotifier = new Notifier(robotMap.getLogger());
 		this.driveSubsystem = robotMap.getDrive();
-
-
-
 		//Run the logger to write all the events that happened during initialization to a file.
 		robotMap.getLogger().run();
 		Clock.updateTime();
@@ -116,7 +113,7 @@ public class Robot extends IterativeRobot {
 		if (robotMap.getTeleopStartupCommand() != null)
 			robotMap.getTeleopStartupCommand().start();
 
-		driveSubsystem.setDefaultCommandManual(robotMap.getDefaultDriveCommand());
+		driveSubsystem.setDefaultCommandManual(robotMap.getDefaultDriveCommand());g
 	}
 
 	/**

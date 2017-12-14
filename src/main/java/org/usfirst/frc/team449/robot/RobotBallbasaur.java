@@ -66,30 +66,6 @@ public class RobotBallbasaur {
 	@Nullable
 	private final Pneumatics pneumatics;
 
-	/**
-	 * The gear handler on this robot. Can be null.
-	 */
-	@Nullable
-	private final SolenoidSimple gearHandler;
-
-	/**
-	 * The I2C port of the RIOduino plugged into this robot. Can be null.
-	 */
-	@Nullable
-	private final Integer RIOduinoPort;
-
-	/**
-	 * The switch for selecting which alliance we're on. Can be null if doMP is false or testMP is true, but otherwise
-	 * must have a value.
-	 */
-	@Nullable
-	private final MappedDigitalInput locationDial;
-
-	/**
-	 * The command to be run when first enabled in teleoperated mode.
-	 */
-	@Nullable
-	private final Command teleopStartupCommand;
 
 	/**
 	 * The command to be run when first enabled.
@@ -106,22 +82,14 @@ public class RobotBallbasaur {
 	                       @NotNull @JsonProperty(required = true) YamlCommand defaultDriveCommand,
 	                       @NotNull @JsonProperty(required = true) MappedRunnable updater,
 	                       @Nullable Pneumatics pneumatics,
-	                       @Nullable SolenoidSimple gearHandler,
-	                       @Nullable Integer RIOduinoPort,
-	                       @Nullable MappedDigitalInput locationDial,
-	                       @Nullable YamlCommand teleopStartupCommand,
 	                       @Nullable YamlCommand startupCommand) {
 		this.buttons = buttons != null ? buttons : new ArrayList<>();
 		this.oi = oi;
 		this.drive = drive;
 		this.pneumatics = pneumatics;
-		this.gearHandler = gearHandler;
 		this.logger = logger;
 		this.updater = updater;
-		this.RIOduinoPort = RIOduinoPort;
-		this.locationDial = locationDial;
 		this.defaultDriveCommand = defaultDriveCommand.getCommand();
-		this.teleopStartupCommand = teleopStartupCommand != null ? teleopStartupCommand.getCommand() : null;
 		this.startupCommand = startupCommand != null ? startupCommand.getCommand() : null;
 	}
 
@@ -173,39 +141,9 @@ public class RobotBallbasaur {
 		return pneumatics;
 	}
 
-	/**
-	 * @return The gear handler on this robot. Can be null.
-	 */
-	@Nullable
-	public SolenoidSimple getGearHandler() {
-		return gearHandler;
-	}
-
-	/**
-	 * @return The I2C port of the RIOduino plugged into this robot. Can be null.
-	 */
-	@Nullable
-	public Integer getRIOduinoPort() {
-		return RIOduinoPort;
-	}
 
 
-	/**
-	 * @return The dial for selecting which side of the field the robot is on. Can be null if getDoMP returns false or
-	 * getTestMP returns true, but otherwise has a value.
-	 */
-	@Nullable
-	public MappedDigitalInput getLocationDial() {
-		return locationDial;
-	}
 
-	/**
-	 * @return The command to be run when first enabled in teleoperated mode.
-	 */
-	@Nullable
-	public Command getTeleopStartupCommand() {
-		return teleopStartupCommand;
-	}
 
 
 	/**

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
@@ -79,7 +80,7 @@ public class Robot extends IterativeRobot {
 			YAMLMapper mapper = new YAMLMapper();
 			//Turn the Map read by SnakeYaml into a String so Jackson can read it.
 			String fixed = mapper.writeValueAsString(normalized);
-			//Use a parameter name module so we don't have to specify name for every field.
+			//Use a parameter name module so we don't have to specify name for every field./
 			mapper.registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
 			//Deserialize the map into an object.
 			robotMap = mapper.readValue(fixed, RobotBallbasaur.class);
@@ -91,9 +92,6 @@ public class Robot extends IterativeRobot {
 		//Set fields from the map.
 		this.loggerNotifier = new Notifier(robotMap.getLogger());
 		this.driveSubsystem = robotMap.getDrive();
-
-
-
 		//Run the logger to write all the events that happened during initialization to a file.
 		robotMap.getLogger().run();
 		Clock.updateTime();
@@ -104,6 +102,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+
+
+		doStartupTasks();
+
 		if (!enabled) {
 			if (robotMap.getStartupCommand() != null) {
 				robotMap.getStartupCommand().start();
@@ -111,12 +113,8 @@ public class Robot extends IterativeRobot {
 			enabled = true;
 		}
 
-		doStartupTasks();
-
-		if (robotMap.getTeleopStartupCommand() != null)
-			robotMap.getTeleopStartupCommand().start();
-
 		driveSubsystem.setDefaultCommandManual(robotMap.getDefaultDriveCommand());
+
 	}
 
 	/**
@@ -133,9 +131,9 @@ public class Robot extends IterativeRobot {
 	/**
 	 * Run when we first enable in autonomous
 	 */
-	@Override
-	public void autonomousInit() {
-	}
+//	@Override
+//	public void autonomousInit() {
+//	}
 
 	/**
 	 * Runs every tick in autonomous.
@@ -155,14 +153,15 @@ public class Robot extends IterativeRobot {
 	public void disabledInit() {
 		//Fully stop the drive
 		driveSubsystem.fullStop();
+
 	}
 
-	/**
-	 * Run when we first enable in test mode.
-	 */
-	@Override
-	public void testInit() {
-	}
+//	/**
+//	 * Run when we first enable in test mode.
+//	 */
+//	@Override
+//	public void testInit() {
+//	}
 
 	/**
 	 * Run every tic while disabled
@@ -181,4 +180,5 @@ public class Robot extends IterativeRobot {
 		//Start running the logger
 		loggerNotifier.startPeriodic(robotMap.getLogger().getLoopTimeSecs());
 	}
+
 }

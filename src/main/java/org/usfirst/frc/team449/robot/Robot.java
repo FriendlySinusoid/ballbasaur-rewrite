@@ -44,12 +44,6 @@ public class Robot extends IterativeRobot {
 	 */
 	private Notifier loggerNotifier;
 
-	/**
-	 * The string version of the alliance we're on ("red" or "blue"). Used for string concatenation to pick which
-	 * profile to execute.
-	 */
-	@Nullable
-	private String allianceString;
 
 	/**
 	 * Whether or not the robot has been enabled yet.
@@ -72,10 +66,6 @@ public class Robot extends IterativeRobot {
 		Yaml yaml = new Yaml();
 		try {
 			//Read the yaml file with SnakeYaml so we can use anchors and merge syntax.
-//			Map<?, ?> normalized = (Map<?, ?>) yaml.load(new FileReader(RESOURCES_PATH+"ballbasaur_map.yml"));
-//			Map<?, ?> normalized = (Map<?, ?>) yaml.load(new FileReader(RESOURCES_PATH + "naveen_map.yml"));
-//			Map<?, ?> normalized = (Map<?, ?>) yaml.load(new FileReader(RESOURCES_PATH + "nate_map.yml"));
-//			Map<?, ?> normalized = (Map<?, ?>) yaml.load(new FileReader(RESOURCES_PATH + "calcifer_outreach_map.yml"));
 			Map<?, ?> normalized = (Map<?, ?>) yaml.load(new FileReader(RESOURCES_PATH + "ballb.yml"));
 			YAMLMapper mapper = new YAMLMapper();
 			//Turn the Map read by SnakeYaml into a String so Jackson can read it.
@@ -124,6 +114,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		//Refresh the current time.
 		Clock.updateTime();
+		robotMap.getUpdater().run();
 		//Run all commands. This is a WPILib thing you don't really have to worry about.
 		Scheduler.getInstance().run();
 	}
@@ -144,6 +135,8 @@ public class Robot extends IterativeRobot {
 		Clock.updateTime();
 		//Run all commands. This is a WPILib thing you don't really have to worry about.
 		Scheduler.getInstance().run();
+
+		robotMap.getUpdater().run();
 	}
 
 	/**

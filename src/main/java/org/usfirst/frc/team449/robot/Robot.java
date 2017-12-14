@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
@@ -101,6 +102,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopInit() {
+
+
+		doStartupTasks();
+
 		if (!enabled) {
 			if (robotMap.getStartupCommand() != null) {
 				robotMap.getStartupCommand().start();
@@ -108,12 +113,8 @@ public class Robot extends IterativeRobot {
 			enabled = true;
 		}
 
-		doStartupTasks();
-
-		if (robotMap.getTeleopStartupCommand() != null)
-			robotMap.getTeleopStartupCommand().start();
-
 		driveSubsystem.setDefaultCommandManual(robotMap.getDefaultDriveCommand());
+
 	}
 
 	/**
@@ -130,9 +131,9 @@ public class Robot extends IterativeRobot {
 	/**
 	 * Run when we first enable in autonomous
 	 */
-	@Override
-	public void autonomousInit() {
-	}
+//	@Override
+//	public void autonomousInit() {
+//	}
 
 	/**
 	 * Runs every tick in autonomous.
@@ -152,14 +153,15 @@ public class Robot extends IterativeRobot {
 	public void disabledInit() {
 		//Fully stop the drive
 		driveSubsystem.fullStop();
+
 	}
 
-	/**
-	 * Run when we first enable in test mode.
-	 */
-	@Override
-	public void testInit() {
-	}
+//	/**
+//	 * Run when we first enable in test mode.
+//	 */
+//	@Override
+//	public void testInit() {
+//	}
 
 	/**
 	 * Run every tic while disabled
@@ -178,4 +180,5 @@ public class Robot extends IterativeRobot {
 		//Start running the logger
 		loggerNotifier.startPeriodic(robotMap.getLogger().getLoopTimeSecs());
 	}
+
 }

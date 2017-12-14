@@ -12,6 +12,7 @@ import org.usfirst.frc.team449.robot.jacksonWrappers.YamlCommand;
 import org.usfirst.frc.team449.robot.oi.OI;
 import org.usfirst.frc.team449.robot.oi.buttons.CommandButton;
 import org.usfirst.frc.team449.robot.other.Logger;
+import org.usfirst.frc.team449.robot.other.Updater;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SolenoidSimple;
 import org.usfirst.frc.team449.robot.subsystem.singleImplementation.pneumatics.Pneumatics;
 
@@ -22,12 +23,6 @@ import java.util.List;
  * The Jackson-compatible object representing the entire robot.
  */
 public class RobotBallbasaur {
-
-	/**
-	 * The buttons for controlling this robot.
-	 */
-	@NotNull
-	private final List<CommandButton> buttons;
 
 	/**
 	 * The OI for controlling this robot's drive.
@@ -75,15 +70,13 @@ public class RobotBallbasaur {
 
 
 	@JsonCreator
-	public RobotBallbasaur(@Nullable List<CommandButton> buttons,
-	                       @NotNull @JsonProperty(required = true) OI oi,
+	public RobotBallbasaur(@NotNull @JsonProperty(required = true) OI oi,
 	                       @NotNull @JsonProperty(required = true) Logger logger,
 	                       @NotNull @JsonProperty(required = true) DriveTalonCluster drive,
 	                       @NotNull @JsonProperty(required = true) YamlCommand defaultDriveCommand,
 	                       @NotNull @JsonProperty(required = true) MappedRunnable updater,
 	                       @Nullable Pneumatics pneumatics,
 	                       @Nullable YamlCommand startupCommand) {
-		this.buttons = buttons != null ? buttons : new ArrayList<>();
 		this.oi = oi;
 		this.drive = drive;
 		this.pneumatics = pneumatics;
@@ -91,14 +84,6 @@ public class RobotBallbasaur {
 		this.updater = updater;
 		this.defaultDriveCommand = defaultDriveCommand.getCommand();
 		this.startupCommand = startupCommand != null ? startupCommand.getCommand() : null;
-	}
-
-	/**
-	 * @return The buttons for controlling this robot.
-	 */
-	@NotNull
-	public List<CommandButton> getButtons() {
-		return buttons;
 	}
 
 	/**
@@ -132,18 +117,6 @@ public class RobotBallbasaur {
 	public Command getDefaultDriveCommand() {
 		return defaultDriveCommand;
 	}
-
-	/**
-	 * @return The pneumatics on this robot. Can be null.
-	 */
-	@Nullable
-	public Pneumatics getPneumatics() {
-		return pneumatics;
-	}
-
-
-
-
 
 
 	/**

@@ -1,4 +1,5 @@
 ---
+drive:
     org.usfirst.frc.team449.robot.drive.unidirectional.DriveTalonCluster:
         '@id': drive
         leftMaster:

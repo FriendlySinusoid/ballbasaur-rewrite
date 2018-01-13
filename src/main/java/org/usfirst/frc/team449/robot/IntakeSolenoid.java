@@ -6,7 +6,7 @@ import org.usfirst.frc.team449.robot.jacksonWrappers.YamlSubsystem;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.intake.SubsystemIntake;
 import org.usfirst.frc.team449.robot.subsystem.interfaces.solenoid.SubsystemSolenoid;
 
-public class PneumaticsAndIntake extends YamlSubsystem implements SubsystemSolenoid,SubsystemIntake{
+public class IntakeSolenoid extends YamlSubsystem implements SubsystemSolenoid,SubsystemIntake{
 
 	@Override
 	protected void initDefaultCommand() {
